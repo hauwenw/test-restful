@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">Demo</a>
+    </nav>
+    <div class="container" id="content">
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.3/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+
+            function assignClickEvent(id='list'){
+                $(`#${id}`).click(function(){
+                    $('.row').remove();
+                    if(id !== 'list' ){
+                        loadData(`/articles/${id}`);
+                    } else {
+                        loadData();
+                    }
+                });
+            }
+
+            function renderToCard(data){
+
+                let btnId, btnText;
+
+                if (data._detail){
+                    btnId = 'list';
+                    btnText = '文章列表';
+                } else {
+                    btnId = data.id;
+                    btnText = '詳全文';
+                    data.content = data.content.slice(0, 100) + '...';
+                }
+
+                let row = $('<div>').addClass("row").css("margin", "25px");
+                let card = $('<div>').addClass("card");
+                let body = $('<div>').addClass("card-body");
+                let title = $('<h4>', {text: data.title});
+                let posted = $('<p>', {text: moment(data.posted).format('MM/DD HH:mm')}).css("color", "grey");
+                let content = $('<p>', {text: data.content});
+                let btn = $('<button>', {text: btnText, id: btnId}).addClass('btn btn-primary')
+
+                let appendList = [posted, content]
+
+                if (data._detail){
+                    data.videos.forEach(function(item){
+                        appendList.push($('<iframe>', {src: item.source}).css("width", "100%").css("height", "315px"));
+                    });
+                }
+
+                appendList.push(btn);
+
+                $("#content").append(row.append(card.append(body.append(title, appendList)))).hide().fadeIn()
+
+                assignClickEvent(btnId);
+
+            }
+
+            function loadData(url='/articles/'){
+                fetch(url, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    credentials: "same-origin"
+                }).then(function(response){
+                    if(response.ok) {
+                        return response.json()
+                    }
+                }).then(function(data){
+                    if(data instanceof Array) {
+                        data.forEach(renderToCard);
+                    } else {
+                        data._detail = true;
+                        renderToCard(data);
+                    };
+                })
+            };
+
+            loadData();
+        });
+    </script>
+</body>
+</html>
