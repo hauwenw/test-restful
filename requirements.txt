@@ -4,3 +4,4 @@ django-extensions==1.9.7
 djangorestframework==3.7.3
 lxml==4.1.1
 requests==2.18.4
+django-crontab==0.7.1
