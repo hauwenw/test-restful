@@ -15,7 +15,7 @@ class Article(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ('created', )
+        ordering = ('-posted', )
 
 
 class Video(models.Model):
