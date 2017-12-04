@@ -44,13 +44,14 @@
 
                 let row = $('<div>').addClass("row").css("margin", "25px");
                 let card = $('<div>').addClass("card");
+                let img = $('<img>', {src: data.main_image}).addClass("card-img-top");
                 let body = $('<div>').addClass("card-body");
                 let title = $('<h4>', {text: data.title});
                 let posted = $('<p>', {text: moment(data.posted).format('MM/DD HH:mm')}).css("color", "grey");
                 let content = $('<p>', {text: data.content});
                 let btn = $('<button>', {text: btnText, id: btnId}).addClass('btn btn-primary')
 
-                let appendList = [posted, content]
+                let appendList = [title, posted, content]
 
                 if (data._detail){
                     data.videos.forEach(function(item){
@@ -60,7 +61,7 @@
 
                 appendList.push(btn);
 
-                $("#content").append(row.append(card.append(body.append(title, appendList)))).hide().fadeIn()
+                $("#content").append(row.append(card.append(body.append(img, appendList)))).hide().fadeIn()
 
                 assignClickEvent(btnId);
 
