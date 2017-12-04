@@ -2,6 +2,8 @@
 
 setup virtualenv and install requirements
 
+demo site: http://ec2-52-193-143-218.ap-northeast-1.compute.amazonaws.com/
+
 ```
 virtualenv venv
 source venv/bin/activate
