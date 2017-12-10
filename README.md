@@ -22,6 +22,12 @@ create initial data
 ./manage.py runscript web_crawler
 ```
 
+install rabbitMQ as message broker and start
+```
+sudo apt-get install rabbitmq-server
+```
+
+
 add jobs to crontab
 ```
 ./manage.py crontab add

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from crawler.crawlers import Crawler
+from crawler.tasks import crawl
 
 
 def update():
-    c = Crawler('https://nba.udn.com/nba/index?gr=www')
-    c.new_article_check()
+    crawl('https://nba.udn.com/nba/index?gr=www')
